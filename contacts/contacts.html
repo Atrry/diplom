@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Контакты - Фиджитал Спорт</title>
+</head>
+<body>
+    <header>
+        <h1>Фиджитал Спорт</h1>
+        <nav>
+            <a href="/index.html">Главная</a>
+            <a href="../news-page/news.html">Новости</a>
+            <a href="../gallery/gallery.html">Галерея</a>
+            <a href="../contacts/contacts.html">Контакты</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-section">
+            <h2>Контакты</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Адрес</h3>
+                    <p>ул. Спортивная, 123, г. Москва, Россия</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Телефон</h3>
+                    <p>+7 (123) 456-78-90</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Email</h3>
+                    <p>info@fidgitalsport.ru</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Социальные сети</h3>
+                    <div class="social-links">
+                        <a href="https://vk.com/fidgitalsport" target="_blank">VK</a>
+                        <a href="https://t.me/fidgitalsport" target="_blank">Telegram</a>
+                        <a href="https://instagram.com/fidgitalsport" target="_blank">Instagram</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3>Обратная связь</h3>
+                <form action="submit_form.php" method="post">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="message">Сообщение:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+
+            <div class="map">
+                <h3>Мы на карте</h3>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.373789424745!2d37.61763331593076!3d55.75582628055302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a5a738fa419%3A0x7c347d5d8a3e4a1d!2sRed%20Square!5e0!3m2!1sen!2sru!4v1633012345678!5m2!1sen!2sru" 
+                        width="100%" 
+                        height="300" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Фиджитал Спорт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
