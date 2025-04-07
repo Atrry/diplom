@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU"></script>
     <title>Контакты - Фиджитал Спорт</title>
 </head>
 <body>
     <header>
         <h1>Фиджитал Спорт</h1>
         <nav>
-            <a href="../index.html">Главная</a>
-            <a href="../gallery/gallery.html">Галерея</a>
-            <a href="../news-page/news.html">Новости</a>
+            <a href="../">Главная</a>
+            <a href="../gallery/">Галерея</a>
+            <a href="../news-page/">Новости</a>
             <a href="#">Контакты</a>
         </nav>
     </header>
@@ -60,20 +61,14 @@
             </div>
 
             <div class="map">
-                <h3>Мы на карте</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.373789424745!2d37.61763331593076!3d55.75582628055302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a5a738fa419%3A0x7c347d5d8a3e4a1d!2sRed%20Square!5e0!3m2!1sen!2sru!4v1633012345678!5m2!1sen!2sru" 
-                        width="100%" 
-                        height="300" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                </iframe>
+                <h3>Расположение на карте</h3>
+                <div id="yandex-map" style="width: 100%; height: 400px;"></div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2023 Фиджитал Спорт. Все права защищены.</p>
     </footer>
+    <script src="js/map.js"></script>
 </body>
 </html>
