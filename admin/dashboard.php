@@ -28,7 +28,10 @@ $gallery = $galleryQuery->fetch_all(MYSQLI_ASSOC);
             <th>ID</th>
             <th>Заголовок</th>
             <th>Действия</th>
+<<<<<<< HEAD
             <th>Дата создания</th>
+=======
+>>>>>>> ba75e01af8f40709fc7b64da51b8218d92825623
         </tr>
 
         <?php foreach ($news as $item): ?>
@@ -36,7 +39,10 @@ $gallery = $galleryQuery->fetch_all(MYSQLI_ASSOC);
             <td><?= $item['id'] ?></td>
             <td><?= $item['заголовок'] ?></td>
             <td><?= $item['контент'] ?></td>
+<<<<<<< HEAD
             <td><?= $item['дата_создания'] ?></td>
+=======
+>>>>>>> ba75e01af8f40709fc7b64da51b8218d92825623
             <td>
                 <a href="edit_news.php?id=<?= $item['id'] ?>">Редактировать</a>
                 <a href="delete_news.php?id=<?= $item['id'] ?>" onclick="return confirm('Вы уверены?')">Удалить</a>
