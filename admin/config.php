@@ -1,5 +1,5 @@
 <?php
-$host = '185.244.173.217';
+$host = 'mysql';
 $username = 'user';
 $password = 'kdyKYAXM1';
 $db = 'phygital';
