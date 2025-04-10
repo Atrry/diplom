@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Редактировать фото</title>
+    <link rel="stylesheet" href="css/edit_photo.css">
 </head>
 <body>
     <h1>Редактировать фото</h1>
