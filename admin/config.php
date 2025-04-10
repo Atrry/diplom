@@ -1,13 +1,13 @@
 <?php
-/*$host = 'mysql';
+$host = 'mysql';
 $username = 'user';
 $password = 'kdyKYAXM1';
-$db = 'phygital';*/
+$db = 'phygital';
 
-$host = '127.0.0.1';
+/*$host = '127.0.0.1';
 $username = 'root';
 $password = '';
-$db = 'phygital';
+$db = 'phygital';*/
 
 $sql = new mysqli($host, $username, $password, $db);
 if ($sql->connect_error) {

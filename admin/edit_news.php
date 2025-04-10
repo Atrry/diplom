@@ -3,7 +3,7 @@ session_start();
 require 'config.php';
 
 if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Редактировать новость</title>
-    <link rel="stylesheet" href="css/add_news.css">
 </head>
 <body>
     <h1>Редактировать новость</h1>

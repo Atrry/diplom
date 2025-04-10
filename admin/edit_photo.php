@@ -3,13 +3,13 @@ session_start();
 require 'config.php';
 
 if (!isset($_SESSION['admin'])) {
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 
 $id = $_GET['id'];
 
-// Получение данных фотографии
+// Get photo data
 $stmt = $sql->prepare("SELECT * FROM галерея WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['заголовок'];
     $url = $_POST['url'];
 
-    // Обновление фотографии
+    // Update photo
     $stmt = $sql->prepare("UPDATE галерея SET заголовок = ?, url = ? WHERE id = ?");
     $stmt->bind_param("ssi", $title, $url, $id);
     $stmt->execute();
@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Редактировать фото</title>
-    <link rel="stylesheet" href="css/add_photo.css">
 </head>
 <body>
     <h1>Редактировать фото</h1>
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="заголовок" value="<?= $photo['заголовок'] ?>" required><br>
         
         <label>URL фото:</label>
-        <input type="text" name="url" value="<?= $photo['URL']?>" required><br>
+        <input type="text" name="url" value="<?= $photo['url'] ?>" required><br>
         
         <button type="submit">Сохранить</button>
     </form>
