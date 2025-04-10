@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="заголовок" value="<?= $photo['заголовок'] ?>" required><br>
         
         <label>URL фото:</label>
-        <input type="text" name="url" value="<?= $photo['url'] ?>" required><br>
+        <input type="text" name="url" value="<?= $photo['URL'] ?>" required><br>
         
         <button type="submit">Сохранить</button>
     </form>
