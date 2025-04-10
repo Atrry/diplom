@@ -19,6 +19,7 @@ $gallery = $galleryQuery->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>ПАНЕЛЬ АДМИНИСТРАТОРА</title>
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <h1>ПАНЕЛЬ АДМИНИСТРАТОРА</h1>
