@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Редактировать новость</title>
-    <link rel="stylesheet" href="css/edit_news.css">
+    <link rel="stylesheet" href="css/add_news.css">
 </head>
 <body>
     <h1>Редактировать новость</h1>
