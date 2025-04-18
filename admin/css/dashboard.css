@@ -1,0 +1,225 @@
+html {
+    scroll-padding-top: 150px;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background: #e6e7e9;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    color: #333;
+}
+
+main {
+    padding: 130px 20px 0 20px;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+
+    font-size: 20px;
+    font-weight: 900;
+}
+
+a {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 8px 15px;
+    background-color: #676a6b;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #40464b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #3b3b3b;
+    color: white;
+}
+
+tr:hover {
+    background-color: #e3f2fd;
+}
+
+img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+}
+
+.actions a {
+    padding: 5px 10px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.actions a:last-child {
+    background-color: #e74c3c;
+}
+
+.actions a:last-child:hover {
+    background-color: #c0392b;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logout-button {
+    padding: 8px 15px;
+    background-color: #7c4e4b;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f;
+}
+
+header {
+    width: 100%;
+    height: 130px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    border-bottom: 2px solid #3498db;
+}
+
+#slider-container {
+    margin-top: 40px;
+}
+
+.container {
+    margin-top: 50px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.nav-btn {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 8px 15px;
+    background-color: #3b3b3b;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #252525;
+}
+
+.contacts-table {
+    margin-top: 20px;
+}
+
+.contacts-table th, 
+.contacts-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+#contacts-container {
+    margin-top: 40px;
+}
+
+/* ИЗМЕНЕНО: Стили для формы редактирования контактов */
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.save-button {
+    padding: 10px 20px;
+    background-color: #3b3b3b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-button:hover {
+    background-color: #252525;
+}
+
+.check-button {
+    background-color: #7281ac;
+}
+
+.check-button:hover {
+    background-color: #5c698d;
+}
+
+@media (max-width:1280px) {
+    header {
+        max-width: 1280px;
+        width: 100%;
+        height: 80px;
+        scroll-padding-top: 80px;
+    }
+
+    main {
+        padding: 70px 10px 0 10px;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+
+}
