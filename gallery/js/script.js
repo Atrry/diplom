@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     galleryImages.forEach((image, index) => {
         image.addEventListener('click', () => {
             currentIndex = index;
-            lightbox.style.display = 'flex';
+            lightbox.style.display = 'block';
             lightboxImg.src = image.src;
         });
     });
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Переключение изображений с помощью клавиатуры
     document.addEventListener('keydown', (e) => {
-        if (lightbox.style.display === 'flex') {
+        if (lightbox.style.display === 'block') {
             if (e.key === 'ArrowLeft') {
                 currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
                 lightboxImg.src = galleryImages[currentIndex].src;

@@ -23,18 +23,15 @@
             <div class="news-grid">
                 <?php
                     require '../admin/config.php';
-                    $query=$sql->query('SELECT * FROM новости');
+                    $query=$sql->query('SELECT * FROM новости ORDER BY id DESC');
                     $result=$query->fetch_all(MYSQLI_ASSOC);
-
+             
                      foreach($result as $item): ?> 
                         <div class="news-item">
                             <div class="news-image" style="background-image: url('<?= $item['фото']?>');"></div>
                             <div class="news-content">
-                                <p class="title"><?= $item['заголовок']?></p>
-                                <div class="container"> <!-- спросить у миши как это лучше обернуть?? -->
-                                    <a href="news-detail.php?id=<?= $item['id']?>" class="read-more">Читать далее</a>
-                                    <p id="date"><?= date('d-m-Y', strtotime($item['дата_создания']))?></p>
-                                </div>
+                                <p><?= $item['заголовок']?></p>
+                                <a href="news-detail.php?id=<?= $item['id']?>" class="read-more">Читать далее</a>
                             </div>
                         </div>
                 <?php endforeach; ?>

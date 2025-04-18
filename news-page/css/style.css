@@ -93,7 +93,7 @@ main {
     padding: 15px;
 }
 
-.title {
+.news-content p {
     margin: 0 0 10px;
     font-size: 20px;
     display: -webkit-box;
@@ -138,20 +138,4 @@ footer {
 .logo:visited {
     text-decoration: none;
     color: inherit;
-}
-
-
-.container {
-    width: 260px;
-    min-height: 40px;
-    display: flex;
-    justify-content: space-between;
-}
-
-#date {
-    display: block;
-    margin-left: 180px;
-
-    font-size: 14px;
-    color: #666;
 }
