@@ -1,4 +1,11 @@
+<?php
+require 'config.php';
+$newsQuery = $sql->query('SELECT * FROM новости ORDER BY id DESC');
+$news = $newsQuery->fetch_all(MYSQLI_ASSOC);
 
+$galleryQuery = $sql->query('SELECT * FROM галерея ORDER BY id DESC');
+$gallery = $galleryQuery->fetch_all(MYSQLI_ASSOC);
+?>
 
 <!DOCTYPE html>
 <html lang="ru">
