@@ -15,46 +15,47 @@ session_start();
 
 require 'config.php';
 
+// Проверка авторизации администратора (добавьте этот код в форму входа)
+if (isset($_POST['login']) && isset($_POST['password'])) {
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+    
+    // Здесь должна быть проверка логина/пароля из БД
+    if ($login === 'admin' && $password === 'secure_password') {
+        $_SESSION['admin'] = true;
+        $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+        $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $_SESSION['last_activity'] = time();
+        header('Location: admin.php');
+        exit();
+    } else {
+        die('Неверные учетные данные');
+    }
+}
+
+// Проверка активности сессии
 if (isset($_SESSION['admin'])) {
-    if (!isset($_SESSION['ip']) || $_SESSION['ip'] !== $_SERVER['REMOTE_ADDR']) {
+    if (!isset($_SESSION['ip']) || $_SESSION['ip'] !== $_SERVER['REMOTE_ADDR'] ||
+        !isset($_SESSION['user_agent']) || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT'] ||
+        (time() - $_SESSION['last_activity'] > 1800)) {
         session_unset();
         session_destroy();
         header('Location: index.php');
         exit();
     }
-
-    if (!isset($_SESSION['user_agent']) || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
-        session_unset();
-        session_destroy();
-        header('Location: index.php');
-        exit();
-    }
-
-    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
-        session_unset();
-        session_destroy();
-        header('Location: index.php');
-        exit();
-    }
-
-    $_SESSION['last_activity'] = time();
-} else {
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-    $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     $_SESSION['last_activity'] = time();
 }
 
-if (!isset($_SESSION['admin'])) {
+// Редирект если не авторизован
+if (!isset($_SESSION['admin']) && basename($_SERVER['PHP_SELF']) !== 'index.php') {
     header('Location: index.php');
     exit();
 }
 
+// Выход
 if (isset($_GET['logout'])) {
-    unset($_SESSION['admin']);
+    session_unset();
     session_destroy();
-    
-    setcookie('admin_logged_in', '', time() - 3600, '/', $_SERVER['HTTP_HOST'], true, true);
-
     header('Location: index.php');
     exit();
 }
