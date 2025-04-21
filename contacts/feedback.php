@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Port = 587;
 
         $mail->setFrom('22200827@live.preco.ru', $name); // Должен совпадать с логином
-        $mail->addAddress('exampleto@p33.org');
+        $mail->addAddress('22200827@live.preco.ru');
         
         $mail->isHTML(true);
         $mail->Subject = 'Заявка с тестового сайта: ' . $name;
