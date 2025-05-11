@@ -15,6 +15,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Заполните все поля!');
     }
 
+    $error = true;
+    $secret = '6LfaBjYrAAAAAEfhXv5_CUa_3QUhaSZUPOYTG_Dx';
+    if (!empty($_POST['g-recaptcha-response'])) {
+        $curl = curl_init('https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, 'secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
+        $out = curl_exec($curl);
+        curl_close($curl);
+        $out = json_decode($out);
+        if ($out->success == true) {
+            $error = false;
+        }
+    }
+    if ($error) {
+        die('Ошибка заполнения капчи.');
+    }
+
     $name = htmlspecialchars($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $comment = htmlspecialchars($_POST['comment']);
@@ -25,14 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp-mail.outlook.com'; // Правильный сервер для Outlook/Live
+        $mail->Host = 'smtp-mail.outlook.com';
         $mail->SMTPAuth = true;
         $mail->Username = '22200827@live.preco.ru';
         $mail->Password = 'kdyKYAXM';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('22200827@live.preco.ru', $name); // Должен совпадать с логином
+        $mail->setFrom('22200827@live.preco.ru', $name);
         $mail->addAddress('22200827@live.preco.ru');
         
         $mail->isHTML(true);

@@ -12,6 +12,7 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <title>Контакты - Фиджитал Спорт</title>
 </head>
 <body>
@@ -57,6 +58,7 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
                     <label for="comment">Сообщение:</label>
                     <textarea id="comment" name="comment" rows="5" required></textarea>
 
+                    <div class="g-recaptcha" data-sitekey="6LfaBjYrAAAAAMvnQATS33wgsM0Njv5oV86tqcB5"></div>
                     <button type="submit">Отправить</button>
                 </form>
             </div>

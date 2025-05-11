@@ -59,31 +59,6 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
             <?php endforeach; ?>
         </div>
     </div>
-<!-- ниже турнирка -->
-
-<style>
-        /* Стили для редактируемых полей */
-        .editable-team, .editable-score {
-            cursor: pointer;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        .editable-team:hover, .editable-score:hover {
-            background: #f0f0f0;
-        }
-    </style>
-</head>
-<body>
-    <div id="bracket"></div>
-
-    <button id="saveButton" style="margin: 20px auto; display: block;">Сохранить данные</button>
-
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js"></script>
-    <script src="js/script.js"></script>
-
-<!--  -->
 </main>
 <footer>
 </footer>
