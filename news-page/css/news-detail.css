@@ -1,0 +1,127 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #2b3238;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #007bff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.news-detail {
+    padding: 50px 0;
+}
+
+.news-header {
+    margin-bottom: 30px;
+}
+
+.news-header h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.news-meta {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.news-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+.news-content {
+    font-size: 16px;
+    line-height: 1.8;
+    padding: 0 20px; /* Добавлен padding для текста новости */
+}
+
+.news-content p {
+    margin-bottom: 20px;
+}
+
+.news-content ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 40px;
+    color: #1a1a1a;
+    text-decoration: none; /* Убрано подчеркивание */
+    font-weight: bold;
+    transition: color 0.3s;
+    padding: 0 20px; /* Добавлен padding для ссылки */
+}
+
+.back-link:hover {
+    color: #589eff;
+}
+
+footer {
+    background-color: #2b3238;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+footer p {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.logo {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo:visited {
+    text-decoration: none;
+    color: inherit;
+}
