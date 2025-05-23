@@ -16,16 +16,15 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
     <title>Контакты - Фиджитал Спорт</title>
 </head>
 <body>
-    <header>
-        <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
-        <nav>
-            <a href="../">Главная</a>
-            <a href="../gallery/">Галерея</a>
-            <a href="../news-page/">Новости</a>
-            <a href="#">Контакты</a>
-        </nav>
-    </header>
-
+<header>
+    <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
+</header>
+<nav>
+    <a href="../index.php">Главная</a>
+    <a href="../gallery/">Галерея</a>
+    <a href="../news-page/">Новости</a>
+    <a href="../contacts/">Контакты</a>
+</nav>
     <main>
         <section class="contact-section">
             <h2>Контакты</h2>

@@ -8,10 +8,26 @@ if (!isset($_SESSION['admin'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['заголовок'];
-    $content = $_POST['контент'];
+    $title = $sql->real_escape_string($_POST['заголовок']);
+    $content = $sql->real_escape_string($_POST['контент']);
+    $fileName = '';
 
-    $newsQuery = $sql->query("INSERT INTO новости (заголовок, контент, дата_создания) VALUES ('  $title  ', '  $content  ', CURRENT_DATE())");
+    // Обработка загрузки фото
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
+        $fileName = basename($_FILES['photo']['name']);
+        $filePath = $uploadDir . $fileName;
+        
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $filePath)) {
+            $fileName = '/uploads/news/' . $fileName;
+        }
+    }
+
+    $newsQuery = $sql->query("INSERT INTO новости (заголовок, контент, дата_создания, фото) VALUES ('$title', '$content', CURRENT_TIMESTAMP(), '$fileName')");
 
     header('Location: dashboard.php');
     exit();
@@ -25,11 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавление новости</title>
     <link rel="stylesheet" href="css/add_news.css">
+    <style>
+        .preview {
+            max-width: 200px;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Добавить новость</h1>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Заголовок:</label>
                 <input type="text" id="title" name="заголовок" required>
@@ -40,8 +63,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <textarea id="content" name="контент" required></textarea>
             </div>
             
+            <div class="form-group">
+                <label for="photo">Фото:</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+                <img id="photoPreview" class="preview" src="" alt="Предпросмотр">
+            </div>
+            
             <button type="submit" class="btn">Добавить новость</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('photo').addEventListener('change', function(e) {
+            const preview = document.getElementById('photoPreview');
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

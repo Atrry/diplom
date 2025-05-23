@@ -26,15 +26,15 @@ if (!$news) {
     <title>Новости - Фиджитал Спорт</title>
 </head>
 <body>
-    <header>
+<header>
     <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
-        <nav>
-            <a href="../">Главная</a>
-            <a href="../gallery/">Галерея</a>
-            <a href="#">Новости</a>
-            <a href="../contacts/">Контакты</a>
-        </nav>
-    </header>
+</header>
+<nav>
+    <a href="../index.php">Главная</a>
+    <a href="../gallery/">Галерея</a>
+    <a href="../news-page/index.php">Новости</a>
+    <a href="../contacts/">Контакты</a>
+</nav>
     
     <main class="container">
         <section class="news-detail">

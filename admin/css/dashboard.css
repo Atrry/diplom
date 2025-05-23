@@ -223,3 +223,69 @@ input[type="email"] {
 @media (max-width: 900px) {
 
 }
+
+#bracket {
+    margin: 0 auto;
+}
+
+/* Базовые стили для турнирной сетки */
+.bracket-container {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bracket {
+    background-color: transparent;
+  }
+  
+  .bracket .team {
+    padding: 12px 15px;
+    margin: 4px 0;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-left: 4px solid #6c757d;
+  }
+  
+  .bracket .team:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-left-color: #0d6efd;
+  }
+  
+  .bracket .team span.score {
+    color: #0d6efd;
+    font-weight: bold;
+  }
+  
+  .bracket .team.winner {
+    background-color: #e7f1ff;
+    border-left-color: #0d6efd;
+    font-weight: 600;
+  }
+  
+  .bracket .bracket-game .label {
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  /* Линии между матчами */
+  .bracket .connector {
+    border-color: #dee2e6;
+    border-width: 2px;
+  }
+
+  .bracket .team.winner {
+    background: linear-gradient(90deg, #e7f1ff 0%, #ffffff 100%);
+    box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+  }
+
+  .score {
+    width: 50px !important;
+  }

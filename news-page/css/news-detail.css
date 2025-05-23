@@ -1,3 +1,18 @@
+@font-face {
+    font-family: 'PressStart';
+    src: url(../../fonts/PressStart2P-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Arsenal';
+    src: url(../../fonts/Arsenal-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Arsenal-Bold';
+    src: url(../../fonts/Arsenal-Bold.ttf);
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -14,19 +29,29 @@ body {
 }
 
 header {
+    width: 100%;
     background-color: #2b3238;
     color: white;
-    padding: 20px;
+    padding: 20px 0;
     text-align: center;
 }
 
-header h1 {
+.logo h1 {
     margin: 0;
     font-size: 24px;
+    font-family: 'PressStart', sans-serif;
+}
+
+.logo {
+    text-decoration: none;
+    color: white;
 }
 
 nav {
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: #21272c;
+    padding: 10px;
 }
 
 nav a {
@@ -34,6 +59,7 @@ nav a {
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
+    font-family: 'Arsenal', sans-serif;
 }
 
 nav a:hover {

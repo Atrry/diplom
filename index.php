@@ -18,7 +18,7 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 <header>
-    <h1>Фиджитал Спорт</h1>
+    <a href="#" class="logo"><h1>Фиджитал Спорт</h1></a>
 </header>
 <nav>
     <a href="#">Главная</a>
@@ -26,8 +26,7 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
     <a href="news-page/">Новости</a>
     <a href="contacts/">Контакты</a>
 </nav>
-<main>
-    <div class="slider">
+<div class="slider">
         <div class="slides">
             <div class="slide" style="background-image: url(photo/1.png);"></div>
             <div class="slide" style="background-image: url(photo/2.jpg);"></div>
@@ -43,6 +42,7 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
             <span class="dot" data-slide="2"></span>
         </div>
     </div>
+<main>
     <div class="news-container">
         <h2 class="title">АКТУАЛЬНЫЕ НОВОСТИ</h2>
         <div class="news-grid">
@@ -59,9 +59,55 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
             <?php endforeach; ?>
         </div>
     </div>
+    
+    <div class="reg-for-tournamennt">
+        <h1 class="title">ПОДРОБНОСТИ ТУРНИРОВ</h1>
+    </div>
+    <div class="tournaments-description">
+        <?php
+            $tournament_data = $sql ->query("SELECT t.*, tt.название_типа FROM турниры t JOIN типы_турниров tt ON t.id_типа = tt.id_типа;");
+            $tournament_data_result = $tournament_data -> fetch_all(MYSQLI_ASSOC);
+
+            foreach ($tournament_data_result as $item):
+        ?>
+            <details>
+            <summary><?=$item['название_турнира']?></summary>
+            <p><?=$item['описание']?></p>
+            <p>Вид спорта: <?=$item['название_типа']?></p>
+            </details>
+            <?php endforeach; ?>
+    </div>
+    <div class="reg-for-tournamennt">
+        <h1 class="title">Турниры</h1>
+    </div>
+    <?php
+            foreach ($tournament_data_result as $item):
+        ?>
+    <div class="reg-for-tournamennt">
+        <div class="tournament-block">
+        <div class="tournament-header">
+            <h3 class="tournament-title"><?= $item['название_турнира']?></h3>
+        </div>
+        <div class="tournament-body">
+            <div class="tournament-dates">
+                <span><?= $item['дата_начала']?></span>
+                <span>-</span>
+                <span><?= $item['дата_окончания']?></span>
+            </div>
+            <span class="tournament-status status-registration"><?= $item['статус']?></span>
+        </div>
+        <div class="tournament-footer">
+            <a href="tournament/tournament-detail.php?id=<?= $item['id_турнира']?>" class="view-link">Подробнее →</a>
+        </div>
+    </div>
+    </div>
+    <?php endforeach; ?>
 </main>
 <footer>
 </footer>
 <script src="js/slider.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js"></script>
+<script src="js/tournament.js"></script>
 </body>
 </html>

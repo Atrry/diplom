@@ -7,16 +7,15 @@
     <title>Галерея - Фиджитал Спорт</title>
 </head>
 <body>
-    <header>
-        <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
-        <nav>
-            <a href="../">Главная</a>
-            <a href="#">Галерея</a>
-            <a href="../news-page/">Новости</a>
-            <a href="../contacts/">Контакты</a>
-        </nav>
-    </header>
-
+<header>
+    <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
+</header>
+<nav>
+    <a href="../index.php">Главная</a>
+    <a href="#">Галерея</a>
+    <a href="../news-page/">Новости</a>
+    <a href="../contacts/">Контакты</a>
+</nav>
     <main>
         <section class="gallery-section">
             <h2>ГАЛЕРЕЯ</h2>
