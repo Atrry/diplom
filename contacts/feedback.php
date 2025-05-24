@@ -12,7 +12,8 @@ $mail->CharSet = 'utf-8';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['comment'])) {
-        die('Заполните все поля!');
+        echo 'Заполните все поля!';
+        exit;
     }
 
     $error = true;
@@ -30,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($error) {
-        die('Ошибка заполнения капчи.');
+        echo 'Ошибка заполнения капчи.';
+        exit;
     }
 
     $name = htmlspecialchars($_POST['name']);
@@ -38,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = htmlspecialchars($_POST['comment']);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die('Некорректный email!');
+        echo 'Некорректный email!';
+        exit;
     }
     
     try {

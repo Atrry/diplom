@@ -97,11 +97,11 @@ $registration_open = ($tournament['статус'] === 'регистрация' &
                         </div>
                         
                         <div class="form-group">
-                            <label>Контактное лицо (капитан):</label>
-                            <input type="text" id="teamLeader" placeholder="ФИО капитана" required>
-                            <input type="tel" id="leaderPhone" placeholder="Телефон" required>
-                            <div id="phoneError" class="error-message"></div>
-                            <input type="email" id="leaderEmail" placeholder="Email" required>
+                        <label>Контактное лицо (капитан):</label>
+                        <input type="text" id="teamLeader" placeholder="ФИО капитана" required>
+                        <input type="tel" id="leaderPhone" placeholder="+7 (___) ___-__-__" required>
+                        <div id="phoneError" class="error-message"></div>
+                        <input type="email" id="leaderEmail" placeholder="Email" required>
                         </div>
                         
                         <div class="form-group">
@@ -246,14 +246,22 @@ $registration_open = ($tournament['статус'] === 'регистрация' &
         });
 
         // Валидация телефона в реальном времени
-        document.getElementById('leaderPhone')?.addEventListener('input', function() {
-            const phone = this.value.trim();
-            if (phone && !/^[\d\+][\d\-\(\)\s]{9,}$/.test(phone)) {
-                document.getElementById('phoneError').textContent = 'Введите корректный номер телефона';
-            } else {
-                document.getElementById('phoneError').textContent = '';
-            }
-        });
+       document.getElementById('leaderPhone').addEventListener('input', function(e) {
+        let value = this.value.replace(/\D/g, ''); // Удаляем всё, кроме цифр
+        if (value.startsWith('7') || value.startsWith('8')) {
+            value = '7' + value.substring(1); // Приводим к формату +7
+        }
+        if (value.length > 11) value = value.substring(0, 11); // Ограничиваем 11 цифрами
+        
+        let formatted = '';
+        if (value.length > 0) formatted = '+7 ';
+        if (value.length > 1) formatted += '(' + value.substring(1, 4);
+        if (value.length > 4) formatted += ') ' + value.substring(4, 7);
+        if (value.length > 7) formatted += '-' + value.substring(7, 9);
+        if (value.length > 9) formatted += '-' + value.substring(9, 11);
+        
+        this.value = formatted;
+    });
 
         // Основной обработчик формы
         document.getElementById('teamRegistrationForm')?.addEventListener('submit', async function(e) {

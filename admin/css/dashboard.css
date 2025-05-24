@@ -289,3 +289,7 @@ input[type="email"] {
   .score {
     width: 50px !important;
   }
+
+  .application-block {
+    margin-top: 50px;
+  }
