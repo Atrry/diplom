@@ -1,49 +1,29 @@
 <?php
-ini_set('session.cookie_secure', 1);
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_strict_mode', 1);
-ini_set('session.gc_maxlifetime', 1800);
-session_set_cookie_params([
-    'lifetime' => 1800,
-    'path' => '/',
-    'domain' => $_SERVER['HTTP_HOST'],
-    'secure' => true,
-    'httponly' => true,
-    'samesite' => 'Strict'
+// Упрощенные настройки сессии
+session_start([
+    'cookie_secure' => true,
+    'cookie_httponly' => true,
+    'use_strict_mode' => true
 ]);
-session_start();
 
 require 'config.php';
 
-// Устанавливаем IP и User-Agent, если их ещё нет
-if (!isset($_SESSION['ip'])) {
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-    $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-    $_SESSION['last_activity'] = time();
-}
-
 // Проверяем безопасность сессии (если пользователь авторизован)
 if (isset($_SESSION['admin'])) {
-    if ($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
+    // Проверяем таймаут неактивности (30 минут)
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
         session_unset();
         session_destroy();
         header('Location: index.php');
         exit();
     }
-
-    if (time() - $_SESSION['last_activity'] > 1800) {
-        session_unset();
-        session_destroy();
-        header('Location: index.php');
-        exit();
-    }
-
+    
     $_SESSION['last_activity'] = time();
 }
 
 // Если не админ — редирект (но только если это не страница входа)
 if (!isset($_SESSION['admin']) && basename($_SERVER['PHP_SELF']) !== 'index.php') {
-    header('Location: index.php');  // Перенаправляем на страницу входа, а не index.php
+    header('Location: index.php');
     exit();
 }
 
@@ -51,11 +31,11 @@ if (!isset($_SESSION['admin']) && basename($_SERVER['PHP_SELF']) !== 'index.php'
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
-    setcookie('admin_logged_in', '', time() - 3600, '/', $_SERVER['HTTP_HOST'], true, true);
     header('Location: index.php');
     exit();
 }
 
+// Остальной код остается без изменений
 $newsQuery = $sql->query('SELECT * FROM новости ORDER BY id DESC');
 $news = $newsQuery->fetch_all(MYSQLI_ASSOC);
 
@@ -67,8 +47,6 @@ $slider = $sliderQuery->fetch_all(MYSQLI_ASSOC);
 
 $contactsQuery = $sql->query('SELECT * FROM контакты');
 $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
-
-
 ?>
 
 <!DOCTYPE html>

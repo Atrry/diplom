@@ -1,16 +1,14 @@
 <?php
-session_start();
+session_start([
+    'cookie_secure' => true,
+    'cookie_httponly' => true,
+    'use_strict_mode' => true
+]);
+
 require 'config.php';
 
-// Проверяем, есть ли активная сессия или cookie
+// Проверяем активную сессию
 if (isset($_SESSION['admin'])) {
-    header('Location: dashboard.php');
-    exit();
-}
-
-// Проверяем cookie с запомненным входом
-if (isset($_COOKIE['admin_logged_in'])) {
-    $_SESSION['admin'] = true;
     header('Location: dashboard.php');
     exit();
 }
@@ -26,10 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && $user['пароль'] === $password) {
         $_SESSION['admin'] = true;
-        
-        // Всегда устанавливаем куки при успешном входе
-        setcookie('admin_logged_in', '1', time() + 60*60*24*30, '/'); // 30 дней
-        
+        $_SESSION['last_activity'] = time();
         header('Location: dashboard.php');
         exit();
     } else {
@@ -37,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ru">
