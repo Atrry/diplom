@@ -1,6 +1,7 @@
 body, html {
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 .editable-score {
