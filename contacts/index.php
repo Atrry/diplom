@@ -14,7 +14,7 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
     <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Контакты - Фиджитал Спорт</title>
+    <title>Контакты - ССК "Хаски"</title>
     <style>
         .copy-contact {
             cursor: pointer;
@@ -60,7 +60,7 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 <header>
-    <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
+    <a href="../index.php" class="logo"><h1>ССК "Хаски"</h1></a>
 </header>
 <nav>
     <a href="../index.php">Главная</a>

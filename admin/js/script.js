@@ -1,85 +1,147 @@
-function main() {
-    create_bracket();
-    $('#saveButton').on('click', update_date);
-}
-
-function create_bracket() {
-    $.getJSON('php/bracket_data.php').done(function(data) {
-        // ИЗМЕНЕНО: Создаем карту соответствия позиций матчей и их ID
-        window.matchIdMap = {};
-        
-        // Заполняем карту ID матчей
-        data.matchIds.forEach((round, roundIndex) => {
-            round.forEach((matchId, matchIndex) => {
-                const key = `${roundIndex}-${matchIndex}`;
-                window.matchIdMap[key] = matchId;
+$(document).ready(function() {
+    // Загрузка списка турниров
+    $.get('php/get_tournaments.php', function(data) {
+        if (data && data.length) {
+            data.forEach(function(tournament) {
+                $('#tournamentSelector').append(
+                    $('<option>', {
+                        value: tournament.id,
+                        text: tournament.name + ' (' + tournament.status + ')'
+                    })
+                );
             });
-        });
-
-        $('#bracket').bracket({
-            init: data,
-            skipConsolationRound: true
-        });
-
-        $('#bracket').bracket({
-            init: data,
-            skipConsolationRound: true,
-            teamWidth: 160,
-            scoreWidth: 100,
-            matchMargin: 100,
-            roundMargin: 100
-        });
-
-        setTimeout(() => {
-            $('.team .label').each(function() {
-                const text = $(this).text().trim();
-                if (!text || text === 'null') {
-                    $(this).text('TBD');
-                }
-            });
-        }, 100);
-
-        // Редактируемые элементы
-        $('.team:not(.empty) .label').attr('contenteditable', true).addClass('editable-team');
-        $('.score').attr('contenteditable', true)
-            .addClass('editable-score')
-            .on('input', function() {
-                $(this).text($(this).text().replace(/[^\d]/g, '') || '0');
-            })
-            .on('keydown', function(e) {
-                return [8, 46].includes(e.keyCode) || 
-                    (e.keyCode >= 48 && e.keyCode <= 57) || 
-                    (e.keyCode >= 96 && e.keyCode <= 105);
-            });
-    }).fail(console.error);
-}
-
-function update_date() {
-    const dataToSave = { matches: [] };
-
-    $('.match').each(function() {
-        const $match = $(this);
-        const roundIndex = $(this).closest('.round').index();
-        const matchIndex = $(this).index();
-        const matchId = window.matchIdMap[`${roundIndex}-${matchIndex}`];
-
-        dataToSave.matches.push({
-            matchId,
-            team1: $match.find('.team:first .label').text().trim(),
-            team2: $match.find('.team:last .label').text().trim(),
-            score1: parseInt($match.find('.score:first').text()) || 0,
-            score2: parseInt($match.find('.score:last').text()) || 0
-        });
+        } else {
+            console.error('Нет данных о турнирах');
+        }
+    }).fail(function() {
+        alert('Ошибка загрузки списка турниров');
     });
 
-    console.log('Отправляемые данные:', dataToSave);
-    
-    $.ajax({
-        url: 'php/data_update.php',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(dataToSave)
-    }).done(console.log).fail(console.error);
+    // Обработчик изменения турнира
+    $('#tournamentSelector').change(function() {
+        const tournamentId = $(this).val();
+        if (tournamentId) {
+            loadBracket(tournamentId);
+        } else {
+            $('#bracket').empty();
+        }
+    });
+
+    function loadBracket(tournamentId) {
+    // Сначала проверяем статус турнира
+    $.get('php/check_tournament_status.php?tournament_id=' + tournamentId, function(statusData) {
+        if (statusData.status === 'регистрация') {
+            $('#bracket').html('<div class="registration-message">Идёт регистрация на турнир.</div>');
+            return;
+        }
+        
+        // Если статус не "Регистрация", загружаем сетку как обычно
+        $.get('php/bracket_data.php?tournament_id=' + tournamentId, function(data) {
+            if (!data || !data.teams || !data.results) {
+                console.error('Неверный формат данных турнирной сетки');
+                return;
+            }
+
+            $('#bracket').empty();
+            
+            const saveData = {
+                teams: data.teams,
+                results: data.results
+            };
+            
+            const container = $('#bracket');
+            
+            container.bracket({
+                init: saveData,
+                skipConsolationRound: true,
+                teamWidth: 160,
+                scoreWidth: 100,
+                matchMargin: 100,
+                roundMargin: 100,
+            });
+
+            // Остальной код обработки сетки остается без изменений
+            setTimeout(() => {
+                $('.score').each(function() {
+                    const $score = $(this);
+                    const matchId = findMatchId($score);
+                    
+                    $score.addClass('editable-score').on('click', function(e) {
+                        e.stopPropagation();
+                        const currentScore = $(this).text().trim();
+                        const $parent = $(this).parent();
+                        const isTeam1 = $parent.hasClass('team') && $parent.index() === 0;
+                        
+                        $(this).html(`<input class="score-input" value="${currentScore}" min="0">`);
+                        $(this).find('input').focus().select();
+                        
+                        function saveScore() {
+                            const newScore = $(this).find('input').val() || '0';
+                            $(this).html(newScore);
+                            
+                            const $match = $(this).closest('.match');
+                            const roundIndex = $match.closest('.round').index();
+                            const matchIndex = $match.index();
+                            
+                            if (matchId) {
+                                const score1 = isTeam1 ? parseInt(newScore) : parseInt($match.find('.score:first').text());
+                                const score2 = !isTeam1 ? parseInt(newScore) : parseInt($match.find('.score:last').text());
+                                
+                                updateMatchScore(matchId, score1, score2);
+                            }
+                        }
+                        
+                        $(this).find('input').on('blur', saveScore);
+                        $(this).find('input').on('keypress', function(e) {
+                            if (e.which === 13) saveScore.call($score);
+                        });
+                    });
+                });
+            }, 100);
+
+            if (data.matchIds) {
+                data.matchIds.forEach((round, roundIndex) => {
+                    round.forEach((matchId, matchIndex) => {
+                        $(`.round:nth-child(${roundIndex + 1}) .match:nth-child(${matchIndex + 1})`).attr('data-match-id', matchId);
+                    });
+                });
+            }
+        }).fail(function(xhr) {
+            alert('Ошибка загрузки турнирной сетки: ' + xhr.responseText);
+        });
+    }).fail(function() {
+        alert('Ошибка проверки статуса турнира');
+    });
 }
 
-$(document).ready(main);
+    // Функция для поиска ID матча
+    function findMatchId($element) {
+        return $element.closest('.match').attr('data-match-id');
+    }
+    
+    // Функция обновления счета на сервере
+    function updateMatchScore(matchId, score1, score2) {
+        $.ajax({
+            url: 'php/data_update.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                matches: [{
+                    matchId: matchId,
+                    score1: score1,
+                    score2: score2
+                }]
+            }),
+            success: function(response) {
+                if (response.error) {
+                    alert('Ошибка сохранения: ' + response.error);
+                } else {
+                    console.log('Счет успешно обновлен');
+                }
+            },
+            error: function(xhr) {
+                alert('Ошибка сохранения: ' + xhr.responseText);
+            }
+        });
+    }
+});

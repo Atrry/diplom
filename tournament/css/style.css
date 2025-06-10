@@ -12,6 +12,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: black;
 }
 
 @font-face {
@@ -102,10 +103,15 @@ nav a:hover::after {
 
 main {
     flex: 1;
-    padding: 2rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.btn-title {
+  width: 637px;
 }
 
 .view-link {
@@ -401,3 +407,20 @@ footer {
   border: var(--primary);
 }
 
+.tournament-grid {
+  border: 1px solid grey;
+  border-radius: 10px;
+  background-color: #1E272E;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 0 30px;
+}
+
+p {
+  color: var(--light);
+}
+
+.modal-title {
+  color: var(--light);
+}

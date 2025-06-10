@@ -51,7 +51,7 @@ $registration_open = ($tournament['статус'] === 'регистрация' &
 </head>
 <body>
 <header>
-    <a href="../index.php" class="logo"><h1>Фиджитал Спорт</h1></a>
+    <a href="../index.php" class="logo"><h1>ССК "Хаски"</h1></a>
 </header>
 <nav>
     <a href="../index.php">Главная</a>
@@ -60,8 +60,10 @@ $registration_open = ($tournament['статус'] === 'регистрация' &
     <a href="../contacts/">Контакты</a>
 </nav>
 <main>
-<a href="../index.php" class="view-link">Назад</a>
-    <h1 class="title"><?= htmlspecialchars($tournament['название_турнира']) ?></h1>
+    <div class="btn-title">
+        <a href="../index.php" class="view-link">Назад</a>
+        <h1 class="title"><?= htmlspecialchars($tournament['название_турнира']) ?></h1>
+    </div>
     
     <?php if (in_array($tournament['статус'], ['в процессе', 'завершен'])): ?>
         <!-- Отображаем турнирную сетку -->
@@ -86,7 +88,7 @@ $registration_open = ($tournament['статус'] === 'регистрация' &
             <div id="registrationModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Регистрация команды на турнир: <?= htmlspecialchars($tournament['название_турнира']) ?></h2>
+                    <h2 class="modal-title">Регистрация команды на турнир: <?= htmlspecialchars($tournament['название_турнира']) ?></h2>
                     <form id="teamRegistrationForm">
                         <input type="hidden" id="tournament" name="tournament" value="<?= $tournament['id_турнира'] ?>">
                         

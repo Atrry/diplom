@@ -18,7 +18,7 @@ $newsItems = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 <header>
-    <a href="#" class="logo"><h1>Фиджитал Спорт</h1></a>
+    <a href="#" class="logo"><h1>ССК "Хаски"</h1></a>
 </header>
 <nav>
     <a href="#">Главная</a>

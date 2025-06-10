@@ -16,7 +16,7 @@ session_start();
 
 require 'config.php';
 
-// Проверки безопасности сессии (остаются без изменений)
+// Проверки безопасности сессии
 if (!isset($_SESSION['ip'])) {
     $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
@@ -54,7 +54,7 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Обработка одобрения заявки (ИЗМЕНЕНО)
+// Обработка одобрения заявки с случайным распределением команд
 if (isset($_GET['approve'])) {
     $id_участника = (int)$_GET['approve'];
     
@@ -70,15 +70,17 @@ if (isset($_GET['approve'])) {
         $sql->begin_transaction();
         
         try {
-            // Получаем ВСЕХ участников этой команды для этого турнира
+            $id_команды = $application['id_команды'];
+            $id_турнира = $application['id_турнира'];
+            
+            // Переносим всех участников команды в таблицу участников
             $team_members_stmt = $sql->prepare("SELECT * FROM заявка_на_турнир 
                                               WHERE id_команды = ? AND id_турнира = ?");
-            $team_members_stmt->bind_param("ii", $application['id_команды'], $application['id_турнира']);
+            $team_members_stmt->bind_param("ii", $id_команды, $id_турнира);
             $team_members_stmt->execute();
             $team_members_result = $team_members_stmt->get_result();
             $team_members = $team_members_result->fetch_all(MYSQLI_ASSOC);
             
-            // Переносим всех участников команды в таблицу участников
             foreach ($team_members as $member) {
                 $insert_stmt = $sql->prepare("INSERT INTO участники_команд 
                                             (id_команды, id_турнира, фио, id_роли, контактный_телефон, контактный_email) 
@@ -94,11 +96,73 @@ if (isset($_GET['approve'])) {
                 $insert_stmt->execute();
             }
             
-            // Удаляем ВСЕХ участников этой команды из таблицы заявок
+            // Удаляем заявку
             $delete_stmt = $sql->prepare("DELETE FROM заявка_на_турнир 
                                         WHERE id_команды = ? AND id_турнира = ?");
-            $delete_stmt->bind_param("ii", $application['id_команды'], $application['id_турнира']);
+            $delete_stmt->bind_param("ii", $id_команды, $id_турнира);
             $delete_stmt->execute();
+            
+            // Проверяем, все ли команды зарегистрированы
+            $approved_teams_stmt = $sql->prepare("
+                SELECT COUNT(DISTINCT id_команды) as count 
+                FROM участники_команд 
+                WHERE id_турнира = ?
+            ");
+            $approved_teams_stmt->bind_param("i", $id_турнира);
+            $approved_teams_stmt->execute();
+            $approved_result = $approved_teams_stmt->get_result();
+            $approved_count = $approved_result->fetch_assoc()['count'];
+            
+            $max_teams_stmt = $sql->prepare("
+                SELECT максимальное_количество_команд 
+                FROM турниры 
+                WHERE id_турнира = ?
+            ");
+            $max_teams_stmt->bind_param("i", $id_турнира);
+            $max_teams_stmt->execute();
+            $max_result = $max_teams_stmt->get_result();
+            $max_teams = $max_result->fetch_assoc()['максимальное_количество_команд'];
+            
+            // Если все команды зарегистрированы, создаем матчи со случайным распределением
+            if ($approved_count == $max_teams) {
+                // Получаем список всех команд турнира в случайном порядке
+                $teams_stmt = $sql->prepare("
+                    SELECT DISTINCT id_команды 
+                    FROM участники_команд 
+                    WHERE id_турнира = ?
+                    ORDER BY RAND()
+                ");
+                $teams_stmt->bind_param("i", $id_турнира);
+                $teams_stmt->execute();
+                $teams_result = $teams_stmt->get_result();
+                $teams = $teams_result->fetch_all(MYSQLI_ASSOC);
+                
+                // Создаем матчи для первого раунда
+                $match_num = 1;
+                for ($i = 0; $i < count($teams); $i += 2) {
+                    $team1 = $teams[$i]['id_команды'];
+                    $team2 = isset($teams[$i+1]) ? $teams[$i+1]['id_команды'] : NULL;
+                    
+                    $insert_match_stmt = $sql->prepare("
+                        INSERT INTO матчи 
+                        (id_турнира, раунд, номер_матча_в_раунде, id_команды_1, id_команды_2, статус) 
+                        VALUES (?, 1, ?, ?, ?, 'ожидается')
+                    ");
+                    $insert_match_stmt->bind_param("iiii", $id_турнира, $match_num, $team1, $team2);
+                    $insert_match_stmt->execute();
+                    
+                    $match_num++;
+                }
+                
+                // Обновляем статус турнира
+                $update_tournament_stmt = $sql->prepare("
+                    UPDATE турниры 
+                    SET статус = 'в процессе' 
+                    WHERE id_турнира = ?
+                ");
+                $update_tournament_stmt->bind_param("i", $id_турнира);
+                $update_tournament_stmt->execute();
+            }
             
             // Фиксируем транзакцию
             $sql->commit();
@@ -113,10 +177,11 @@ if (isset($_GET['approve'])) {
     }
 }
 
-// Обработка отклонения заявки (остается без изменений)
+// Обработка отклонения заявки (удаление всей команды)
 if (isset($_GET['reject'])) {
     $id_участника = (int)$_GET['reject'];
     
+    // Получаем данные заявки
     $stmt = $sql->prepare("SELECT * FROM заявка_на_турнир WHERE id_участника = ?");
     $stmt->bind_param("i", $id_участника);
     $stmt->execute();
@@ -124,30 +189,49 @@ if (isset($_GET['reject'])) {
     $application = $result->fetch_assoc();
     
     if ($application) {
-        // Удаляем заявку
-        $delete_stmt = $sql->prepare("DELETE FROM заявка_на_турнир WHERE id_участника = ?");
-        $delete_stmt->bind_param("i", $id_участника);
-        $delete_stmt->execute();
+        // Начинаем транзакцию для атомарности операций
+        $sql->begin_transaction();
         
-        // Удаляем команду, если это последний участник
-        $check_team_stmt = $sql->prepare("SELECT COUNT(*) as count FROM заявка_на_турнир WHERE id_команды = ?");
-        $check_team_stmt->bind_param("i", $application['id_команды']);
-        $check_team_stmt->execute();
-        $team_result = $check_team_stmt->get_result();
-        $team_data = $team_result->fetch_assoc();
-        
-        if ($team_data['count'] == 0) {
-            $delete_team_stmt = $sql->prepare("DELETE FROM команды WHERE id_команды = ?");
-            $delete_team_stmt->bind_param("i", $application['id_команды']);
+        try {
+            $id_команды = $application['id_команды'];
+            
+            // 1. Удаляем ВСЕХ участников этой команды из таблицы заявок
+            $delete_applications_stmt = $sql->prepare("
+                DELETE FROM заявка_на_турнир 
+                WHERE id_команды = ?
+            ");
+            $delete_applications_stmt->bind_param("i", $id_команды);
+            $delete_applications_stmt->execute();
+            
+            // 2. Удаляем ВСЕХ участников этой команды из таблицы участников
+            $delete_participants_stmt = $sql->prepare("
+                DELETE FROM участники_команд 
+                WHERE id_команды = ?
+            ");
+            $delete_participants_stmt->bind_param("i", $id_команды);
+            $delete_participants_stmt->execute();
+            
+            // 3. Удаляем саму команду
+            $delete_team_stmt = $sql->prepare("
+                DELETE FROM команды 
+                WHERE id_команды = ?
+            ");
+            $delete_team_stmt->bind_param("i", $id_команды);
             $delete_team_stmt->execute();
+            
+            // Фиксируем транзакцию
+            $sql->commit();
+            
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        } catch (Exception $e) {
+            // Откатываем транзакцию в случае ошибки
+            $sql->rollback();
+            die("Ошибка при отклонении заявки: " . $e->getMessage());
         }
-        
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
     }
 }
 
-// Получаем список заявок с группировкой по командам и турнирам
 // Получаем список заявок с группировкой по командам и турнирам
 $applicationsQuery = $sql->query('
     SELECT 
@@ -307,14 +391,14 @@ while ($role = $rolesQuery->fetch_assoc()) {
                 <form method="get" style="display: inline;">
                     <input type="hidden" name="approve" value="<?= $first_member['id_участника'] ?>">
                     <button type="submit" class="approve-btn" 
-                            onclick="return confirm('Одобрить ВСЕХ участников команды <?= htmlspecialchars($application['название_команды'] ?? '') ?>?')">
+                            onclick="return confirm('Одобрить ВСЕХ участников команды <?= htmlspecialchars($application['название_команды'] ?? '') ?>? Команда будет добавлена в турнир со случайным распределением.')">
                         Одобрить
                     </button>
                 </form>
                 <form method="get" style="display: inline;">
                     <input type="hidden" name="reject" value="<?= $first_member['id_участника'] ?>">
                     <button type="submit" class="reject-btn" 
-                            onclick="return confirm('Отклонить заявку? Команда будет удалена, если это последний участник.')">
+                            onclick="return confirm('Вы уверены? Будет удалена ВСЯ КОМАНДА со всеми участниками и заявками!')">
                         Отклонить
                     </button>
                 </form>

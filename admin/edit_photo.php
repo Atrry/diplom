@@ -60,6 +60,7 @@ $photo = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <title>Редактировать фото</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body { 
             font-family: Arial; max-width: 800px; margin: 20px auto; 
