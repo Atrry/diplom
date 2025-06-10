@@ -87,12 +87,12 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
             <a href="#gallery-container" class="nav-btn">Галерея</a>
             <a href="#slider-container" class="nav-btn">Слайдер</a>
             <a href="#contacts-container" class="nav-btn">Контакты</a>
-            <a href="#admin" class="nav-btn">Ресурсы для администратора</a>
-            <a href="tournament.php">Заявки на турниры</a>
-            <a href="create_tournament.php">Добавить турнир</a>
+            <a href="#admin" class="nav-btn">Ссылки</a>
+            <a href="tournament.php">Заявки</a>
+            <a href="create_tournament.php">Турниры</a>
             <a href="grid_edit.php">Турнирная сетка</a>
         </div>
-        <h1>ПАНЕЛЬ АДМИНИСТРАТОРА</h1>
+        <h1></h1>
         <a href="?logout" class="logout-button">Выйти</a>
     </header>
     

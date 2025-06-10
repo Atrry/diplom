@@ -20,6 +20,7 @@ $(document).ready(function() {
     // Обработчик изменения турнира
     $('#tournamentSelector').change(function() {
         const tournamentId = $(this).val();
+
         if (tournamentId) {
             loadBracket(tournamentId);
         } else {
@@ -28,8 +29,13 @@ $(document).ready(function() {
     });
 
     function loadBracket(tournamentId) {
+        console.log(tournamentId);
     // Сначала проверяем статус турнира
     $.get('php/check_tournament_status.php?tournament_id=' + tournamentId, function(statusData) {
+        statusData = JSON.parse(statusData);
+        console.log(typeof statusData);
+        console.log(statusData.status === 'регистрация');
+        console.log(statusData.status == 'регистрация');
         if (statusData.status === 'регистрация') {
             $('#bracket').html('<div class="registration-message">Идёт регистрация на турнир.</div>');
             return;
