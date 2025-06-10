@@ -63,7 +63,6 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
         <div class="btn">
             <a href="#news-container" class="nav-btn">Новости</a>
             <a href="#gallery-container" class="nav-btn">Галерея</a>
-            <a href="#slider-container" class="nav-btn">Слайдер</a>
             <a href="#contacts-container" class="nav-btn">Контакты</a>
             <a href="#admin" class="nav-btn">Ссылки</a>
             <a href="tournament.php">Заявки</a>
@@ -125,28 +124,6 @@ $contacts = $contactsQuery->fetch_all(MYSQLI_ASSOC);
                     <td>
                         <a href="edit_photo.php?id=<?= $item['id'] ?>">Редактировать</a>
                         <a href="delete_photo.php?id=<?= $item['id'] ?>" onclick="return confirm('Вы уверены?')">Удалить</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-        <div class="container">
-            <h2 id="slider-container">Слайдер</h2>
-            <a href="add_slider.php">Добавить фото</a> <!-- ПОПРАВИТЬ ЗДЕСЬ: ссылку на добавление слайдера -->
-            <a href="../" class="check-button">Перейти на страницу "Главная"</a>
-            <table border="1" class="slider-table">
-                <tr>
-                    <th>ID</th>
-                    <th>Фото</th>
-                    <th>Действия</th>
-                </tr>
-                <?php foreach ($slider as $item): ?>
-                <tr>
-                    <td><?= $item['id'] ?></td>
-                    <td><img src="<?= $item['фото'] ?>" width="600"></td>
-                    <td>
-                        <a href="edit_slider.php?id=1">Редактировать</a> <!-- ПОПРАВИТЬ ЗДЕСЬ: ссылку редактирования -->
-                        <a href="delete_slider.php?id=1" onclick="return confirm('Вы уверены?')">Удалить</a> <!-- ПОПРАВИТЬ ЗДЕСЬ: ссылку удаления -->
                     </td>
                 </tr>
                 <?php endforeach; ?>
